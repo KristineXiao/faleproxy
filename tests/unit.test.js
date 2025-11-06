@@ -57,7 +57,7 @@ describe('Yale to Fale replacement logic', () => {
       </head>
       <body>
         <h1>Hello World</h1>
-        <p>This is a test page with no Yale references.</p>
+        <p>This is a test page with no references to that university.</p>
       </body>
       </html>
     `;
@@ -69,7 +69,11 @@ describe('Yale to Fale replacement logic', () => {
       return this.nodeType === 3;
     }).each(function() {
       const text = $(this).text();
-      const newText = text.replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
+      const newText = text.replace(/Yale/gi, function(match) {
+        if (match === 'YALE') return 'FALE';
+        if (match === 'Yale') return 'Fale';
+        return 'fale';
+      });
       if (text !== newText) {
         $(this).replaceWith(newText);
       }
@@ -77,10 +81,10 @@ describe('Yale to Fale replacement logic', () => {
     
     const modifiedHtml = $.html();
     
-    // Content should remain the same
+    // Content should remain the same since there's no Yale to replace
     expect(modifiedHtml).toContain('<title>Test Page</title>');
     expect(modifiedHtml).toContain('<h1>Hello World</h1>');
-    expect(modifiedHtml).toContain('<p>This is a test page with no Yale references.</p>');
+    expect(modifiedHtml).toContain('<p>This is a test page with no references to that university.</p>');
   });
 
   test('should handle case-insensitive replacements', () => {
@@ -94,7 +98,11 @@ describe('Yale to Fale replacement logic', () => {
       return this.nodeType === 3;
     }).each(function() {
       const text = $(this).text();
-      const newText = text.replace(/Yale/gi, 'Fale');
+      const newText = text.replace(/Yale/gi, function(match) {
+        if (match === 'YALE') return 'FALE';
+        if (match === 'Yale') return 'Fale';
+        return 'fale';
+      });
       if (text !== newText) {
         $(this).replaceWith(newText);
       }
