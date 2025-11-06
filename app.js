@@ -41,7 +41,7 @@ app.post('/fetch', async (req, res) => {
         // Only process if it's a text node
         if (content && $(el).children().length === 0) {
           // Replace Yale with Fale in text content only
-          content = content.replace(/Yale/g, 'Fale').replace(/yale/g, 'fail');
+          content = content.replace(/Yale/g, 'Fale').replace(/yale/g, 'fail');  
           $(el).html(content);
         }
       }
